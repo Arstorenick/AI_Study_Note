@@ -1,70 +1,71 @@
 """
-Hello AI World - Your First AI Program
+Hello AI World - 你的第一个AI程序
 =======================================
 
-This is a simple pattern recognition example that demonstrates core AI concepts:
-- Learning from data
-- Making predictions
-- Understanding patterns
+这是一个简单的模式识别示例，展示了人工智能的核心概念：
+·从数据中学习
+·进行预测
+·理解模式
 
-What this program does:
-- Learns a simple mathematical pattern (y = 2x)
-- Uses that pattern to make predictions
-- No complex libraries needed - just pure Python!
+该程序的功能：
+·学习一个简单的数学规则（y = 2x）
+·利用该模式进行预测
+·不需要复杂的库———只需纯 Python！
 
-Perfect for understanding AI basics before diving into neural networks.
+非常适合在深入神经网络之前理解人工智能的基础知识。
 """
 
 import random
 
 class SimpleAILearner:
     """
-    A very simple AI that learns linear relationships.
-    This demonstrates the fundamental concept of AI: learning from data.
+    一个非常简单的AI，专门学习线性关系。
+    这展示了人工智能的核心概念：从数据中学习。
     """
     
     def __init__(self):
-        # The "weight" is what our AI learns
-        # It starts with a random guess
+        # "weight" 就是我们要让AI去学习的东西
+        # 它从一个随机的猜测开始
         self.weight = random.uniform(0, 5)
-        self.learning_rate = 0.01  # How fast our AI learns
+        self.learning_rate = 0.01  # AI的学习速率
         
     def predict(self, x):
         """
-        Make a prediction based on what we've learned.
-        
-        Args:
-            x: Input value
-            
-        Returns:
-            Predicted output
+        根据我们已学习到的内容进行预测。
+
+        参数:
+            x: 输入值
+    
+        返回:
+            预测的输出结果
         """
+
         return self.weight * x
     
     def train(self, training_data, epochs=100):
         """
-        Train the AI to learn the pattern in the data.
+        训练 AI 掌握数据背后的规律。
         
         Args:
-            training_data: List of (input, output) pairs
-            epochs: Number of times to go through all the data
+            training_data: 包含 (输入, 输出) 配对的列表
+            epochs: 训练轮数
         """
-        print("🎓 Training started...")
-        print(f"Initial guess for weight: {self.weight:.2f}")
+        print("🎓 训练开始了...")
+        print(f"weight的初始值: {self.weight:.2f}")
         
         for epoch in range(epochs):
             total_error = 0
             
-            # Learn from each example
+            # 从每个样本中学习
             for x, y_actual in training_data:
-                # Make a prediction
+                # 做出预测
                 y_predicted = self.predict(x)
                 
-                # Calculate error (how wrong we were)
+                # 计算误差 (自己跟正确答案之间差了多远)
                 error = y_actual - y_predicted
                 total_error += abs(error)
                 
-                # Update our weight to reduce error (this is learning!)
+                # 调整权重，降低误差 (这才是真正的学习！)
                 self.weight += self.learning_rate * error * x
             
             # Print progress every 20 epochs
