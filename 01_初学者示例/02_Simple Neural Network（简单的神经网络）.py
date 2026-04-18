@@ -5,11 +5,11 @@
 这个例子演示了如何在不依赖任何机器学习框架的情况下手写一个神经网络。
 这将帮助你透彻理解神经网络“底层”的运行机制。
 
-你将学到:
+你将学到：
 - 神经元（neurons）的工作原理
 - 前向传播（Forward propagation）（做出预测）
 - 反向传播（Backward propagation）（从错误中学习）
-- Sigmoid 激活函数（用于控制信号）
+- 什么是 Sigmoid 激活函数（用于控制信号）
 
 实战案例：让 AI 学会判断点是在直线的上面还是下面。
 """
@@ -19,20 +19,20 @@ import math
 
 def sigmoid(x):
     """
-    Sigmoid activation function: converts any value to a number between 0 and 1.
+    Sigmoid 激活函数：将任意数值转换为 0 到 1 之间的数。
     
-    This is like asking "how confident are we?" 
-    - Values close to 1 mean "very confident YES"
-    - Values close to 0 mean "very confident NO"
-    - Values around 0.5 mean "not sure"
+    这就好比在问AI：“你有多大把握？” 
+    - 输出接近 1 ：AI说“我非常有信心，是！”
+    - 输出接近 0 ：AI说“我非常有信心，不是！”
+    - 输出接近 0.5 ：AI说“额……我不确定。”
     
-    Args:
-        x: Input value
+    参数：
+        x：输入值
         
-    Returns:
-        Value between 0 and 1
+    返回值：
+        0 到 1 之间的数值
     """
-    # Prevent overflow for very large/small numbers
+    # 针对极大或极小数值，防止计算溢出
     if x > 100:
         return 1.0
     if x < -100:
@@ -42,87 +42,87 @@ def sigmoid(x):
 
 def sigmoid_derivative(x):
     """
-    Derivative of sigmoid function - needed for learning.
-    This tells us how much to adjust our weights.
+    Sigmoid 函数的导数（derivative）——学习过程必不可少。
+    它告诉我们需要对权重进行多大的调整。
     
-    Args:
-        x: Sigmoid output value
+    参数：
+        x: Sigmoid 函数的输出值
         
-    Returns:
-        Derivative value
+    返回值：
+        导数值
     """
     return x * (1 - x)
 
 
 class SimpleNeuron:
     """
-    A single artificial neuron - the building block of neural networks.
+    单个“人工神经元”——这是构建神经网络的基石。
     
-    Think of it as a tiny decision maker that:
-    1. Takes inputs (like features of data)
-    2. Multiplies them by learned weights
-    3. Adds them up with a bias
-    4. Applies an activation function
-    5. Outputs a prediction
+    你可以把它想象成一个微型的“决策器”，它的工作流程是这样的：
+    1. 接收输入（比如数据的各种特征）
+    2. 将它们乘以AI学到的权重 
+    3. 加上“偏置”（bias）并求和
+    4. 通过“激活函数”处理
+    5. 输出一个预测结果
     """
     
     def __init__(self, num_inputs):
         """
-        Initialize the neuron with random weights.
+        用随机权重初始化这个神经元。
         
-        Args:
-            num_inputs: Number of input values this neuron will receive
+        参数:
+            num_inputs: 这个神经元将要接收多少个输入值
         """
-        # Each input gets a weight (how important is this input?)
+        # 每个输入都会有一个对应的权重（用来判断这个输入到底有多重要？）
         self.weights = [random.uniform(-1, 1) for _ in range(num_inputs)]
-        # Bias helps adjust the output
+        # 偏置用来微调最终的输出结果
         self.bias = random.uniform(-1, 1)
-        # Store the last output for learning
+        # 保存最后的输出，以便学习阶段调用
         self.output = 0
         
     def feedforward(self, inputs):
         """
-        Calculate the neuron's output (prediction).
-        This is called "forward propagation".
+        计算神经元的输出（即预测值）。
+        这个过程就叫做“前向传播”（forward propagation）。
         
-        Args:
-            inputs: List of input values
+        参数:
+            inputs: 输入值的列表
             
-        Returns:
-            Neuron's output (between 0 and 1)
+        返回值:
+            神经元的输出结果（数值介于 0 到 1 之间）
         """
-        # Step 1: Multiply each input by its weight and sum them
+        # 步骤一: 把每个输入值与其权重相乘，再求总和
         total = sum(w * x for w, x in zip(self.weights, inputs))
         
-        # Step 2: Add bias
+        # 步骤二: 加上偏置值
         total += self.bias
         
-        # Step 3: Apply activation function (sigmoid)
+        # 步骤三: 使用 Sigmoid 函数进行激活处理
         self.output = sigmoid(total)
         
         return self.output
     
     def train(self, inputs, target, learning_rate=0.1):
         """
-        Teach the neuron to improve its predictions.
-        This is called "backpropagation".
+        教这个神经元优化它的预测能力。
+        这个过程就叫做“反向传播”（backward propagation）。
         
-        Args:
+        参数:
             inputs: The input values
             target: What the output should have been
             learning_rate: How much to adjust weights
         """
-        # Calculate error
+        # 计算误差（error）
         error = target - self.output
         
-        # Calculate adjustment amount using derivative
+        # 利用导数来计算调整量（delta）
         delta = error * sigmoid_derivative(self.output)
         
-        # Update weights
+        # 更新权重（weights）
         for i in range(len(self.weights)):
             self.weights[i] += learning_rate * delta * inputs[i]
         
-        # Update bias
+        # 更新偏置（bias）
         self.bias += learning_rate * delta
         
         return abs(error)

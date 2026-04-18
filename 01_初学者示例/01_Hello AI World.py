@@ -46,7 +46,7 @@ class SimpleAILearner:
         """
         训练 AI 掌握数据背后的规律。
         
-        Args:
+        参数：
             training_data: 包含 (输入, 输出) 配对的列表
             epochs: 训练轮数
         """
