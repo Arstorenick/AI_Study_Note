@@ -1,17 +1,17 @@
 """
-Simple Neural Network from Scratch
+从零开始构建简单的神经网络（Neural Network）
 ===================================
 
-This example builds a basic neural network without using any ML frameworks.
-It helps you understand what's happening "under the hood" in neural networks.
+这个例子演示了如何在不依赖任何机器学习框架的情况下手写一个神经网络。
+这将帮助你透彻理解神经网络“底层”的运行机制。
 
-What you'll learn:
-- How neurons work
-- Forward propagation (making predictions)
-- Backward propagation (learning from mistakes)
-- The sigmoid activation function
+你将学到:
+- 神经元（neurons）的工作原理
+- 前向传播（Forward propagation）（做出预测）
+- 反向传播（Backward propagation）（从错误中学习）
+- Sigmoid 激活函数（用于控制信号）
 
-Use case: Learn to classify points as "above" or "below" a line.
+实战案例：让 AI 学会判断点是在直线的上面还是下面。
 """
 
 import random

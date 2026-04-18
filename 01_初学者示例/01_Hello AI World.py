@@ -68,72 +68,72 @@ class SimpleAILearner:
                 # 调整权重，降低误差 (这才是真正的学习！)
                 self.weight += self.learning_rate * error * x
             
-            # Print progress every 20 epochs
+            # 每 20 轮打印一次进度
             if (epoch + 1) % 20 == 0:
                 avg_error = total_error / len(training_data)
-                print(f"Epoch {epoch + 1}/{epochs} - Average error: {avg_error:.4f} - Weight: {self.weight:.2f}")
+                print(f"第 {epoch + 1}/{epochs} 轮 - 平均误差: {avg_error:.4f} - 权重: {self.weight:.2f}")
         
-        print(f"✅ Training complete! Final weight: {self.weight:.2f}")
+        print(f"✅ 训练完成！最终权重: {self.weight:.2f}")
 
 
 def main():
     """
-    Main function - Let's teach our AI!
+    主函数 —— 让我们开始教 AI 吧！
     """
     print("=" * 60)
-    print("Welcome to Hello AI World!")
+    print("欢迎来到AI的世界！")
     print("=" * 60)
     print()
-    print("Today, we'll teach an AI to learn a simple pattern:")
-    print("Given x, predict y where y = 2x")
+    print("今天，我们要教AI学习一个简单的数学规律：")
+    print("给定 x，预测 y，满足 y = 2x 的关系")
     print()
     
-    # Step 1: Create training data
-    # The pattern we want the AI to learn: y = 2 * x
-    print("📊 Creating training data...")
+    # 步骤一：准备训练数据
+    # 我们希望AI学习的规律是: y = 2 * x
+    print("📊 正在创建训练数据...")
     training_data = [
-        (1, 2),    # When x=1, y should be 2
-        (2, 4),    # When x=2, y should be 4
-        (3, 6),    # When x=3, y should be 6
-        (4, 8),    # When x=4, y should be 8
-        (5, 10),   # When x=5, y should be 10
+        (1, 2),    # 当 x = 1 时，y 应该= 2
+        (2, 4),    # 当 x = 2 时，y 应该= 4
+        (3, 6),    # 当 x = 3 时，y 应该= 6
+        (4, 8),    # 当 x = 4 时，y 应该= 8
+        (5, 10),   # 当 x = 5 时，y 应该= 10
     ]
-    print(f"Training examples: {training_data}")
+    print(f"训练样本： {training_data}")
     print()
     
-    # Step 2: Create and train our AI
+    # 步骤二: 构建并训练AI模型
     ai = SimpleAILearner()
     ai.train(training_data, epochs=100)
     print()
     
-    # Step 3: Test our AI with new data
-    print("🧪 Testing our AI with new inputs...")
+    # 步骤三: 使用新数据测试AI模型
+    print("🧪 使用新数据对我们的AI进行测试……")
     print("-" * 60)
     test_inputs = [6, 7, 10, 15]
     
     for x in test_inputs:
         prediction = ai.predict(x)
-        actual = 2 * x  # The true answer
-        print(f"Input: {x:2d} | Prediction: {prediction:6.2f} | Actual: {actual:6.2f} | Difference: {abs(prediction - actual):.2f}")
+        actual = 2 * x  # 正确答案
+        print(f"输入值: {x:2d} | 预测结果: {prediction:6.2f} | 正确答案: {actual:6.2f} | 误差: {abs(prediction - actual):.2f}")
     
     print("-" * 60)
     print()
     
-    # Explanation
-    print("💡 What just happened?")
-    print("1. We gave the AI examples of the pattern (y = 2x)")
-    print("2. The AI learned by adjusting its 'weight' to minimize errors")
-    print("3. After training, it can predict outputs for new inputs!")
+    # 解析
+    print("💡 刚才发生了什么？")
+    print("1. 我们向AI展示了这个数学规律（y = 2x）的样本")
+    print("2. AI通过调整它的“weight”来最小化误差，从而学会了这个规律")
+    print("3. 训练结束后，它就能针对新的输入预测出结果啦！")
     print()
-    print("🎉 Congratulations! You just trained your first AI!")
+    print("🎉 恭喜你！你刚刚训练出了你的第一个AI！")
     print()
-    print("🚀 Next steps:")
-    print("   - Try changing the training data to learn different patterns")
-    print("   - Experiment with the learning_rate (line 29)")
-    print("   - Modify epochs to see how training time affects accuracy")
+    print("🚀 下一步：")
+    print("   - 试着修改训练数据，让它学习不同的规律")
+    print("   - 试着调整一下学习速率（在第29行）")
+    print("   - 修改训练轮数（epochs），看看训练次数是如何影响准确率的")
     print()
 
 
 if __name__ == "__main__":
-    # This runs when you execute the script
+    # 当你运行这个脚本时，这段代码就会执行
     main()
