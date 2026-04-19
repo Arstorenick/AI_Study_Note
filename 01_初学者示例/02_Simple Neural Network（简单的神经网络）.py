@@ -1,17 +1,17 @@
 """
-从零开始构建简单的神经网络（Neural Network）
+从零开始构建简单的神经网络(Neural Network)
 ===================================
 
 这个例子演示了如何在不依赖任何机器学习框架的情况下手写一个神经网络。
 这将帮助你透彻理解神经网络“底层”的运行机制。
 
 你将学到：
-- 神经元（neurons）的工作原理
-- 前向传播（Forward propagation）（做出预测）
-- 反向传播（Backward propagation）（从错误中学习）
-- 什么是 Sigmoid 激活函数（用于控制信号）
+- 神经元(neurons)的工作原理
+- 前向传播(Forward propagation)(做出预测)
+- 反向传播(Backward propagation)(从错误中学习)
+- 什么是 Sigmoid 激活函数(用于控制信号)
 
-实战案例：让 AI 学会判断点是在直线的上面还是下面。
+应用案例：让 AI 学会判断点是在直线的上面还是下面。
 """
 
 import random
@@ -108,9 +108,9 @@ class SimpleNeuron:
         这个过程就叫做“反向传播”（backward propagation）。
         
         参数:
-            inputs: The input values
-            target: What the output should have been
-            learning_rate: How much to adjust weights
+            inputs: 输入的数据值
+            target: 理想的输出结果
+            learning_rate: 权重的调整幅度
         """
         # 计算误差（error）
         error = target - self.output
@@ -130,23 +130,24 @@ class SimpleNeuron:
 
 def generate_training_data(num_samples=100):
     """
-    Generate sample data for training.
+    生成用于训练的样本数据。
     
-    Task: Classify points as above (1) or below (0) the line y = x.
+    任务: 
+        将点分类为位于直线 y = x 上方 (1) 或下方 (0)。
     
-    Args:
-        num_samples: How many training examples to create
+    参数:
+        num_samples: 要创建多少个训练样本。
         
-    Returns:
-        List of (inputs, target) tuples
+    返回值:
+        一个包含 (输入, 目标值) 元组的列表
     """
     data = []
     for _ in range(num_samples):
-        # Random point in 2D space (x, y coordinates)
+        # 二维空间中的随机点（x, y 坐标）
         x = random.uniform(0, 10)
         y = random.uniform(0, 10)
         
-        # Label: 1 if point is above the line y=x, 0 if below
+        # 标签：如果点在直线 y=x 上方则为 1，在下方则为 0
         label = 1 if y > x else 0
         
         data.append(([x, y], label))
@@ -156,15 +157,15 @@ def generate_training_data(num_samples=100):
 
 def visualize_decision(neuron, test_points):
     """
-    Show how the neuron classifies different points.
+    展示神经元是如何对不同点进行归类的。
     
-    Args:
-        neuron: Trained neuron
-        test_points: List of points to test
+    参数:
+        neuron: 已经训练好的神经元
+        test_points: 要测试的点列表
     """
-    print("\n🎯 Testing the trained neuron:")
+    print("\n🎯 正在对训练完毕的神经元进行测试:")
     print("-" * 70)
-    print(f"{'Point':<15} | {'Prediction':<15} | {'Actual':<15} | {'Correct?'}")
+    print(f"{'点位':<15} | {'预测值':<15} | {'实际值':<15} | {'是否正确?'}")
     print("-" * 70)
     
     correct = 0
@@ -181,77 +182,77 @@ def visualize_decision(neuron, test_points):
     
     print("-" * 70)
     accuracy = (correct / len(test_points)) * 100
-    print(f"Accuracy: {accuracy:.1f}% ({correct}/{len(test_points)} correct)")
+    print(f"准确率: {accuracy:.1f}% ({correct}/{len(test_points)} 正确)")
 
 
 def main():
     """
-    Main function - Build and train a neural network!
+    主函数 —— 构建并训练一个神经网络！
     """
     print("=" * 70)
-    print("Simple Neural Network from Scratch")
+    print("从零开始构建简易简单网络")
     print("=" * 70)
-    print("\n📚 Task: Learn to classify points as above or below the line y = x")
+    print("\n📚 任务: 学会将点分类为位于直线 y = x 的上方或下方")
     print()
     
-    # Step 1: Generate training data
-    print("📊 Generating training data...")
+    # 步骤一: 生成训练数据
+    print("📊 正在创建训练数据...")
     training_data = generate_training_data(num_samples=100)
-    print(f"Created {len(training_data)} training examples")
+    print(f"成功生成了 {len(training_data)} 条训练数据")
     
-    # Show a few examples
-    print("\nExample training data:")
+    # 显示几条样本数据
+    print("\n训练数据示例:")
     for i in range(3):
         point, label = training_data[i]
-        position = "above" if label == 1 else "below"
-        print(f"  Point ({point[0]:.2f}, {point[1]:.2f}) is {position} the line y=x")
+        position = "上面" if label == 1 else "下面"
+        print(f"  点 ({point[0]:.2f}, {point[1]:.2f}) 位于直线y=x的 {position}。")
     
-    # Step 2: Create neuron
-    print("\n🧠 Creating a neuron with 2 inputs (x and y coordinates)...")
+    # 步骤二: 创建神经元
+    print("\n🧠 正在创建一个具有 2 个输入( x 和 y 坐标)的神经元...")
     neuron = SimpleNeuron(num_inputs=2)
-    print(f"Initial weights: [{neuron.weights[0]:.3f}, {neuron.weights[1]:.3f}]")
-    print(f"Initial bias: {neuron.bias:.3f}")
+    print(f"初始权重(weights): [{neuron.weights[0]:.3f}, {neuron.weights[1]:.3f}]")
+    print(f"初始偏置值(bias): {neuron.bias:.3f}")
     
-    # Step 3: Train the neuron
-    print("\n🎓 Training the neuron...")
+    # 步骤三: 训练神经元
+    print("\n🎓 正在训练神经元...")
     epochs = 50
     
     for epoch in range(epochs):
         total_error = 0
         
-        # Train on each example
+        # 逐个样本进行训练
         for inputs, target in training_data:
             neuron.feedforward(inputs)
             error = neuron.train(inputs, target, learning_rate=0.1)
             total_error += error
         
-        # Show progress
+        # 展示进度
         if (epoch + 1) % 10 == 0:
             avg_error = total_error / len(training_data)
-            print(f"Epoch {epoch + 1}/{epochs} - Average error: {avg_error:.4f}")
+            print(f"第 {epoch + 1}/{epochs} 轮 - 平均误差: {avg_error:.4f}")
     
-    print("\n✅ Training complete!")
-    print(f"Final weights: [{neuron.weights[0]:.3f}, {neuron.weights[1]:.3f}]")
-    print(f"Final bias: {neuron.bias:.3f}")
+    print("\n✅ 训练完成!")
+    print(f"最终权重(weights): [{neuron.weights[0]:.3f}, {neuron.weights[1]:.3f}]")
+    print(f"最终偏置值(bias): {neuron.bias:.3f}")
     
     # Step 4: Test the neuron
     test_data = generate_training_data(num_samples=10)
     visualize_decision(neuron, test_data)
     
     # Explanation
-    print("\n💡 What just happened?")
-    print("1. The neuron started with random weights")
-    print("2. It looked at 100 example points and their correct labels")
-    print("3. Each time it was wrong, it adjusted its weights slightly")
-    print("4. After 50 rounds, it learned to classify points correctly!")
+    print("\n💡 刚才发生了什么？")
+    print("1. 神经元一开始使用的是随机生成的权重")
+    print("2. 它查看了100个样本和它们的正确答案")
+    print("3. 每次猜错的时候，它都会把权重稍微调整一下")
+    print("4. 经过50轮训练，它已经学会正确分类这些点了！")
     print()
-    print("🎉 You just built a neural network from scratch!")
+    print("🎉 你刚刚从零开始亲手打造了一个神经网络！")
     print()
-    print("🚀 Try this:")
-    print("   - Change num_samples to train on more/fewer examples")
-    print("   - Modify epochs to train for longer/shorter")
-    print("   - Change learning_rate (line 185) and see what happens")
-    print("   - Try different decision boundaries (modify generate_training_data)")
+    print("🚀 试试看:")
+    print("   - 调整样本数量（num_samples）：用更多或更少的例子来训练")
+    print("   - 调整训练轮数（epochs）的数值，控制训练过程的长短")
+    print("   - 修改学习速率（在第105行），看看会发生什么")
+    print("   - 尝试不同的决策边界（修改 generate_training_data 函数）")
     print()
 
 
