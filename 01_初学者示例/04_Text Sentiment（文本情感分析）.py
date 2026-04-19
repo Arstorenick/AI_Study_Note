@@ -27,51 +27,51 @@ class SimpleSentimentAnalyzer:
     """
     
     def __init__(self):
-        # Store word scores (positive words get positive scores)
+        # 存储词汇得分（正面词汇获得正分）
         self.word_scores = {}
-        # Track if we've trained
+        # 记录训练状态
         self.is_trained = False
         
     def preprocess_text(self, text):
         """
-        Clean and prepare text for analysis.
+        清洗并准备用于分析的文本。
         
-        Steps:
-        1. Convert to lowercase
-        2. Remove punctuation
-        3. Split into words
+        步骤:
+        1. 转换为小写
+        2. 去除标点符号
+        3. 分割成单词
         
-        Args:
-            text: Raw text string
+        参数:
+            text: 原始文本字符串
             
-        Returns:
-            List of cleaned words
+        返回:
+            清洗后的单词列表
         """
-        # Convert to lowercase
+        # 转换为小写
         text = text.lower()
         
-        # Remove punctuation and special characters
+        # 去除标点符号和特殊字符
         text = re.sub(r'[^a-z\s]', '', text)
         
-        # Split into words
+        # 分割成单词
         words = text.split()
         
-        # Remove very short words (like "a", "i")
+        # 去除极短的单词（比如 "a", "i"）
         words = [w for w in words if len(w) > 2]
         
         return words
     
     def train(self, training_data):
         """
-        Learn sentiment patterns from labeled examples.
+         从带标签的样本中学习情感模式。
         
         Args:
-            training_data: List of (text, sentiment) tuples
-                          where sentiment is 'positive' or 'negative'
+            training_data: 由 (文本text, 情感sentiment) 元组组成的列表
+                          其中情感标签为 'positive'（正面）或 'negative'（负面）
         """
-        print("🎓 Training sentiment analyzer...")
+        print("🎓 正在训练情感分析器...")
         
-        # Count words in positive and negative texts
+        # 统计正面和负面文本中的词频
         positive_words = Counter()
         negative_words = Counter()
         
@@ -83,49 +83,49 @@ class SimpleSentimentAnalyzer:
             else:
                 negative_words.update(words)
         
-        # Calculate sentiment score for each word
-        # Score > 0 means more positive, < 0 means more negative
+        # 计算每个单词的情感得分
+        # 得分 > 0 表示偏正面，< 0 表示偏负面
         all_words = set(positive_words.keys()) | set(negative_words.keys())
         
         for word in all_words:
             pos_count = positive_words[word]
             neg_count = negative_words[word]
             
-            # Calculate score: difference in appearances
-            # Add smoothing (+1) to avoid division by zero
+            # 计算得分：计算出现次数的差值
+            # 加上平滑项 (+1) 以避免除以零
             total = pos_count + neg_count
             self.word_scores[word] = (pos_count - neg_count) / (total + 1)
         
         self.is_trained = True
         
-        # Show some learned words
-        print(f"✅ Learned sentiment for {len(self.word_scores)} words")
-        print("\n📊 Most positive words:")
+        # 展示一些学习到的单词
+        print(f"✅ 已学习 {len(self.word_scores)} 个单词的情感倾向")
+        print("\n📊 最正面的词汇:")
         sorted_words = sorted(self.word_scores.items(), key=lambda x: x[1], reverse=True)
         for word, score in sorted_words[:5]:
             print(f"   '{word}': {score:+.3f}")
         
-        print("\n📊 Most negative words:")
+        print("\n📊 最负面的词汇:")
         for word, score in sorted_words[-5:]:
             print(f"   '{word}': {score:+.3f}")
     
     def analyze(self, text):
         """
-        Predict the sentiment of new text.
+        预测新文本的情感倾向。
         
         Args:
-            text: Text to analyze
+            text: 待分析的文本
             
         Returns:
-            Tuple of (sentiment, confidence, score)
+            包含 (情感倾向, 置信度, 分数) 的元组(sentiment, confidence, score)
         """
         if not self.is_trained:
-            raise Exception("Please train the analyzer first!")
+            raise Exception("请先对分析器进行训练！")
         
-        # Preprocess text
+        # 文本预处理(Preprocess text)
         words = self.preprocess_text(text)
         
-        # Calculate total sentiment score
+        # 计算情感总分
         total_score = 0
         word_count = 0
         
@@ -134,30 +134,30 @@ class SimpleSentimentAnalyzer:
                 total_score += self.word_scores[word]
                 word_count += 1
         
-        # Average score
+        # 平均得分
         if word_count > 0:
             avg_score = total_score / word_count
         else:
             avg_score = 0
         
-        # Determine sentiment and confidence
+        # 判定情感倾向与置信度
         sentiment = "positive" if avg_score > 0 else "negative"
-        confidence = min(abs(avg_score) * 100, 100)  # Convert to percentage
+        confidence = min(abs(avg_score) * 100, 100)  # 转换为百分比
         
         return sentiment, confidence, avg_score
 
 
 def create_training_data():
     """
-    Create sample training data (movie reviews with labels).
+    创建示例训练数据（带标签的影评）。
     
-    In a real application, you'd have thousands of examples!
+    在真实的应用中，你可是会有成千上万个例子呢！
     
-    Returns:
-        List of (review_text, sentiment) tuples
+    返回值:
+        包含 (评论文本, 情感倾向) 的元组列表
     """
     return [
-        # Positive reviews
+        # 正面评论
         ("This movie was absolutely amazing and wonderful! I loved every minute.", "positive"),
         ("Brilliant performance! The acting was superb and the story captivating.", "positive"),
         ("Fantastic film! Highly recommend to everyone. Best movie of the year!", "positive"),
@@ -167,7 +167,7 @@ def create_training_data():
         ("Wonderful experience! The plot was engaging and entertaining.", "positive"),
         ("Superb direction and acting! One of the best films I've seen.", "positive"),
         
-        # Negative reviews
+        # 负面评论
         ("Terrible movie. Waste of time and money. Very disappointed.", "negative"),
         ("Awful film! Poor acting and boring story. Would not recommend.", "negative"),
         ("Horrible! The worst movie I have ever seen. Extremely disappointing.", "negative"),
@@ -181,26 +181,26 @@ def create_training_data():
 
 def main():
     """
-    Main function - Let's analyze some sentiments!
+    主函数 —— 让我们来搞点情感分析吧！
     """
     print("=" * 70)
-    print("Simple Text Sentiment Analysis")
+    print("简单的文本情感分析")
     print("=" * 70)
-    print("\n📚 Task: Learn to identify positive and negative movie reviews")
+    print("\n📚 任务：学会识别影评是正面还是负面")
     print()
     
-    # Step 1: Create training data
+    # 步骤一: 创建训练数据
     training_data = create_training_data()
-    print(f"📊 Training data: {len(training_data)} movie reviews")
+    print(f"📊 训练数据: {len(training_data)} 条影评")
     print()
     
-    # Step 2: Create and train analyzer
+    # 步骤二: 创建并训练分析器
     analyzer = SimpleSentimentAnalyzer()
     analyzer.train(training_data)
     print()
     
-    # Step 3: Test on new reviews
-    print("🧪 Testing on new movie reviews:")
+    # 步骤三: 在新影评上进行测试
+    print("🧪 正在对新影评进行测试:")
     print("=" * 70)
     
     test_reviews = [
@@ -215,23 +215,23 @@ def main():
     for i, review in enumerate(test_reviews, 1):
         sentiment, confidence, score = analyzer.analyze(review)
         
-        # Visual indicator
+        # 可视化标识
         indicator = "😊" if sentiment == "positive" else "😞"
         
-        print(f"\nReview {i}:")
-        print(f"  Text: \"{review}\"")
-        print(f"  {indicator} Sentiment: {sentiment.upper()}")
-        print(f"  📊 Confidence: {confidence:.1f}%")
-        print(f"  📈 Score: {score:+.3f}")
+        print(f"\n评论 {i}:")
+        print(f"  内容: \"{review}\"")
+        print(f"  {indicator} 情感倾向: {sentiment.upper()}")
+        print(f"  📊 置信度: {confidence:.1f}%")
+        print(f"  📈 得分: {score:+.3f}")
     
     print("\n" + "=" * 70)
     
     # Interactive mode
-    print("\n💬 Try it yourself! Enter your own review (or 'quit' to exit):")
+    print("\n💬 亲自试一试！输入你自己的评论（或者输入 'quit' 退出）:")
     print("-" * 70)
     
     while True:
-        user_input = input("\nYour review: ").strip()
+        user_input = input("\n请输入你的评论: ").strip()
         
         if user_input.lower() in ['quit', 'exit', 'q']:
             break
@@ -243,24 +243,24 @@ def main():
             sentiment, confidence, score = analyzer.analyze(user_input)
             indicator = "😊" if sentiment == "positive" else "😞"
             
-            print(f"\n{indicator} Sentiment: {sentiment.upper()}")
-            print(f"📊 Confidence: {confidence:.1f}%")
-            print(f"📈 Score: {score:+.3f}")
+            print(f"\n{indicator} 情感倾向: {sentiment.upper()}")
+            print(f"📊 置信度: {confidence:.1f}%")
+            print(f"📈 得分: {score:+.3f}")
         except Exception as e:
             print(f"Error: {e}")
     
     # Explanation
-    print("\n💡 What just happened?")
-    print("1. The analyzer learned word patterns from example reviews")
-    print("2. It calculated 'sentiment scores' for words")
-    print("3. For new text, it combines word scores to predict sentiment")
+    print("\n💡 刚才发生了什么？")
+    print("1. 分析器从示例评论中学习到了词汇模式")
+    print("2. 它计算了单词的“情感得分”(sentiment scores)")
+    print("3. 对于新文本，它会综合单词得分来预测情感")
     print()
-    print("🎉 You just built a sentiment analyzer!")
+    print("🎉 恭喜你，刚刚做出了一个情感分析工具！")
     print()
-    print("🚀 Next steps:")
-    print("   - Add more training examples to improve accuracy")
-    print("   - Try analyzing tweets, product reviews, or comments")
-    print("   - Explore more advanced NLP in lessons/5-NLP/")
+    print("🚀 接下来的步骤:")
+    print("   - 添加更多训练样本来提高准确率")
+    print("   - 尝试分析推文、商品评论或留言")
+    print("   - 在 https://github.com/microsoft/AI-For-Beginners/tree/main/translations/zh-CN/lessons/5-NLP 中探索更高级的 NLP 技术")
     print()
 
 
