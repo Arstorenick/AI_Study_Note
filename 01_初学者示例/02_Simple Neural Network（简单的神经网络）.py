@@ -37,7 +37,7 @@ def sigmoid(x):
         return 1.0
     if x < -100:
         return 0.0
-    return 1 / (1 + math.exp(-x))
+    return 1 / (1 + math.exp(-x))   # x越大，越接近1；x越小，越接近0
 
 
 def sigmoid_derivative(x):
@@ -215,7 +215,7 @@ def main():
     
     # 步骤三: 训练神经元
     print("\n🎓 正在训练神经元...")
-    epochs = 50
+    epochs = 100
     
     for epoch in range(epochs):
         total_error = 0
